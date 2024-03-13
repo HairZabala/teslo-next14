@@ -1,7 +1,8 @@
 "use client";
 
+import { useUIStore } from "@/store/ui/ui-store";
+import { cn } from "@/utils/cn";
 import Link from "next/link";
-import React from "react";
 import {
   IoCloseOutline,
   IoLogInOutline,
@@ -14,16 +15,32 @@ import {
 } from "react-icons/io5";
 
 function Sidebar() {
+  const isSidebarOpen = useUIStore((state) => state.isSidebarOpen);
+  const closeSidebar = useUIStore((state) => state.closeSidebar);
+
   return (
     <div>
-      <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-30" />
-      <div className="fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" />
+      {isSidebarOpen && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-30" />
+      )}
 
-      <nav className="fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300">
+      {isSidebarOpen && (
+        <div
+          onClick={closeSidebar}
+          className="fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm"
+        />
+      )}
+
+      <nav
+        className={cn(
+          "fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+          !isSidebarOpen && "translate-x-full"
+        )}
+      >
         <IoCloseOutline
           size={50}
           className="absolute top-5 right-5 cursor-pointer"
-          onClick={() => console.debug("close sidebar")}
+          onClick={() => closeSidebar()}
         />
 
         <div className="relative mt-14">
