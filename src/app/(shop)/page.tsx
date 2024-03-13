@@ -1,12 +1,20 @@
-import { secondaryFont } from "@/utils/font";
-import Image from "next/image";
+import Subtitle from "@/components/typography/Subtitle";
+import Title from "@/components/typography/Title";
+import HeaderPage from "@/components/ui/HeaderPage";
+import ProductGrid from "@/features/products/ProductGrid";
+import { initialData } from "@/seed/seed";
+
+const products = initialData.products;
 
 export default function Home() {
   return (
-    <main className="flex flex-col">
-      <span>Hola Mundo</span>
-      <span className={secondaryFont.className}>Hola Mundo</span>
-      <span className={`${secondaryFont.className} font-bold`}>Hola Mundo</span>
-    </main>
+    <>
+      <HeaderPage
+        title="Products"
+        subtitle="Welcome to the store"
+        className="mb-2"
+      />
+      <ProductGrid products={products} />
+    </>
   );
 }
