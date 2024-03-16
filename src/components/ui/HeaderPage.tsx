@@ -11,7 +11,7 @@ export interface HeaderPageProps {
 const HeaderPage = ({ title, subtitle, className }: HeaderPageProps) => {
   return (
     <div className={`mt-3 ${className}`}>
-      <Title className="mb-6">{title}</Title>
+      <Title className="my-10 mb-6">{title}</Title>
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
     </div>
   );

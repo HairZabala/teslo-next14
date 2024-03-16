@@ -18,7 +18,7 @@ function ProductGridItem({ product }: ProductGridItemProps) {
         <Image
           src={`/products/${displayImage}`}
           alt={product.title}
-          className="w-full object-cover rounded"
+          className="w-full object-cover rounded "
           width={500}
           height={500}
           onMouseEnter={() => setDisplayImage(product.images[1])}

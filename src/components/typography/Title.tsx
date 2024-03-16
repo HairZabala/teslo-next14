@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn";
 import { secondaryFont } from "@/utils/font";
 import React from "react";
 
@@ -9,7 +10,10 @@ export interface TitleProps {
 const Title = ({ children, className }: TitleProps) => {
   return (
     <h1
-      className={`${secondaryFont.className} antialiased text-4xl font-semibold my-10 ${className}`}
+      className={cn(
+        `${secondaryFont.className} antialiased text-4xl font-semibold`,
+        className
+      )}
     >
       {children}
     </h1>
