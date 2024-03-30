@@ -1,16 +1,6 @@
 import { cn } from "@/utils/cn";
 import React from "react";
 
-export interface ButtonComponentColorProps {
-  accentColor?: string;
-  hoverColor?: string;
-  fontColor?: string;
-  selectedFontColor?: string;
-
-  light?: boolean;
-  outline?: boolean;
-}
-
 export interface ButtonComponentSharedProps {
   text: React.ReactNode;
   fontSize?: string;
@@ -31,13 +21,9 @@ export interface ButtonComponentSharedProps {
   onClick?: () => void;
   icon?: React.ReactNode;
 
-  accentColor?: string;
-  hoverColor?: string;
-  fontColor?: string;
-  selectedFontColor?: string;
-
-  light?: boolean;
-  outline?: boolean;
+  loadingSpinnerColor?: string;
+  variant?: "primary" | "disabled" | "light" | "outline" | "custom";
+  className?: string;
 }
 
 const DefaultButton = ({
@@ -52,49 +38,24 @@ const DefaultButton = ({
   type = undefined,
   disabled = false,
   loading = false,
-  light = false,
-  outline = false,
   onClick,
-  //
-  accentColor = "primary-90",
-  hoverColor = "primary-100",
-  fontColor = "text-white",
-  selectedFontColor = "text-white",
-}: ButtonComponentSharedProps & ButtonComponentColorProps) => {
-  const disabledColor = "gray-200";
-
-  const borderColor = `border-2 ${
-    disabled ? `border-${disabledColor}` : `border-${accentColor}`
-  }`;
-
-  const color = disabled
-    ? "text-white"
-    : light || outline
-    ? `text-${accentColor}`
-    : fontColor;
-
-  const backgroundColor = disabled
-    ? `bg-${disabledColor}`
-    : light
-    ? `bg-white`
-    : outline
-    ? `bg-transparent`
-    : `bg-${accentColor}`;
-
-  // hover colors
-  const hoverBorderColor = `${
-    disabled ? `hover:border-${disabledColor}` : `hover:border-${hoverColor}`
-  }`;
-
-  const hoverFontColor = disabled ? "text-white" : `hover:${selectedFontColor}`;
-
-  const hoverBackgroundColor = disabled
-    ? `hover:bg-${disabledColor}`
-    : light || outline
-    ? `hover:bg-white`
-    : `hover:bg-${hoverColor}`;
-
+  variant = "primary",
+  loadingSpinnerColor = "border-white",
+  className = "",
+}: ButtonComponentSharedProps) => {
   const cursor = disabled || loading ? "cursor-not-allowed" : "cursor-pointer";
+
+  const colorVariants: Record<string, string> = {
+    primary:
+      "bg-primary-90 hover:bg-primary-100 border-primary-90 hover:border-primary-100 text-white",
+    disabled:
+      "bg-gray-200 border-gray-200 hover:bg-gray-200 hover:border-gray-200 text-white",
+    light:
+      "bg-white border-primary-90 hover:bg-primary-100 hover:border-primary-100 text-primary-90",
+    outline:
+      "bg-transparent border-primary-90 hover:bg-primary-100 hover:border-primary-100 text-primary-90",
+    custom: "",
+  };
 
   return (
     <button
@@ -110,21 +71,17 @@ const DefaultButton = ({
         contentGap,
         padding,
         cursor,
-        backgroundColor,
-        borderColor,
-        color,
-        hoverBorderColor,
-        hoverFontColor,
-        hoverBackgroundColor,
+        "border-2",
         "transition-all duration-300 ease-in-out",
-        "hover:scale-102"
-        // "bg-transparent"
+        "hover:scale-102",
+        colorVariants[variant],
+        className
       )}
     >
       {loading ? (
         <div className="w-full flex justify-center">
           <div
-            className={`w-4 h-4 border-2 border-${color} border-t-2 border-t-transparent animate-spin h-5 w-5 rounded-full`}
+            className={`w-4 h-4 border-2 ${loadingSpinnerColor} border-t-2 border-t-transparent animate-spin h-5 w-5 rounded-full`}
           />
         </div>
       ) : (
@@ -135,24 +92,3 @@ const DefaultButton = ({
 };
 
 export default DefaultButton;
-
-export function PrimaryButton(props: ButtonComponentSharedProps) {
-  const styleProps = {
-    accentColor: "primary-90",
-    hoverColor: "primary-100",
-    fontColor: "text-white",
-    selectedFontColor: "text-white",
-  };
-
-  return (
-    <DefaultButton
-      {...{
-        ...props,
-        accentColor: styleProps.accentColor,
-        hoverColor: styleProps.hoverColor,
-        fontColor: styleProps.fontColor,
-        selectedFontColor: styleProps.selectedFontColor,
-      }}
-    />
-  );
-}

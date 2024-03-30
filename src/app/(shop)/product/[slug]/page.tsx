@@ -1,5 +1,5 @@
 import Title from "@/components/typography/Title";
-import { PrimaryButton } from "@/components/ui/ButtonComponent";
+import PrimaryButton from "@/components/ui/ButtonComponent";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -32,7 +32,7 @@ export default function ProductPage({ params }: Props) {
         {/* Sizes selector */}
 
         {/* Quantity selector */}
-        <PrimaryButton text="Primary" />
+        <PrimaryButton text="Primary" className="mb-2" />
 
         {/* Description */}
         <h3 className="font-bold text-sm">Description</h3>
