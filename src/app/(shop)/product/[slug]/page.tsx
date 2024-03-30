@@ -2,6 +2,7 @@ import Title from "@/components/typography/Title";
 import PrimaryButton from "@/components/ui/ButtonComponent";
 import QuantitySelector from "@/features/product/QuantitySelector";
 import SizeSelector from "@/features/product/SizeSelector";
+import SlideShow from "@/features/product/SlideShow";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -23,8 +24,9 @@ export default function ProductPage({ params }: Props) {
 
   return (
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
-      {/* SlideShow */}
-      <div className="col-span-1 md:col-span-2">SlideShow</div>
+      <div className="col-span-1 md:col-span-2">
+        <SlideShow images={product.images} title={product.title} />
+      </div>
 
       {/* Details */}
       <div className="col-span-1 px-5 ">
