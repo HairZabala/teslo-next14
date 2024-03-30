@@ -1,5 +1,6 @@
 import Title from "@/components/typography/Title";
 import PrimaryButton from "@/components/ui/ButtonComponent";
+import SizeSelector from "@/features/product/SizeSelector";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -30,6 +31,10 @@ export default function ProductPage({ params }: Props) {
         <p className="text-lg mb-5">${product.price}</p>
 
         {/* Sizes selector */}
+        <SizeSelector
+          availableSizes={product.sizes}
+          // selectedSize={product.sizes[0]}
+        />
 
         {/* Quantity selector */}
         <PrimaryButton text="Primary" className="mb-2" />
