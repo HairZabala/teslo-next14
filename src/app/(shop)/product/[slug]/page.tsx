@@ -1,5 +1,6 @@
 import Title from "@/components/typography/Title";
 import PrimaryButton from "@/components/ui/ButtonComponent";
+import QuantitySelector from "@/features/product/QuantitySelector";
 import SizeSelector from "@/features/product/SizeSelector";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
@@ -37,6 +38,8 @@ export default function ProductPage({ params }: Props) {
         />
 
         {/* Quantity selector */}
+        <QuantitySelector quantity={1} />
+
         <PrimaryButton text="Primary" className="mb-2" />
 
         {/* Description */}
