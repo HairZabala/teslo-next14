@@ -1,5 +1,6 @@
 import Title from "@/components/typography/Title";
 import PrimaryButton from "@/components/ui/ButtonComponent";
+import MobileSlideShow from "@/features/product/MobileSlideShow";
 import QuantitySelector from "@/features/product/QuantitySelector";
 import SizeSelector from "@/features/product/SizeSelector";
 import SlideShow from "@/features/product/SlideShow";
@@ -25,7 +26,16 @@ export default function ProductPage({ params }: Props) {
   return (
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       <div className="col-span-1 md:col-span-2">
-        <SlideShow images={product.images} title={product.title} />
+        <MobileSlideShow
+          images={product.images}
+          title={product.title}
+          className="md:hidden"
+        />
+        <SlideShow
+          images={product.images}
+          title={product.title}
+          className="hidden md:block"
+        />
       </div>
 
       {/* Details */}
