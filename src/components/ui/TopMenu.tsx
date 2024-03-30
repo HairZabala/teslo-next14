@@ -6,7 +6,7 @@ import MenuBotton from "./MenuBotton";
 
 export default function TopMenu() {
   return (
-    <nav className="flex px-5 justify-between items-center w-full">
+    <nav className="sticky bg-white top-0 flex px-5 justify-between items-center w-full z-10">
       {/* Logo */}
       <div>
         <Link href="/">

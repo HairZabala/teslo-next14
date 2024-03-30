@@ -51,9 +51,9 @@ const DefaultButton = ({
     disabled:
       "bg-gray-200 border-gray-200 hover:bg-gray-200 hover:border-gray-200 text-white",
     light:
-      "bg-white border-primary-90 hover:bg-primary-100 hover:border-primary-100 text-primary-90",
+      "bg-white border-primary-90 hover:bg-transparent hover:border-primary-100 text-primary-90",
     outline:
-      "bg-transparent border-primary-90 hover:bg-primary-100 hover:border-primary-100 text-primary-90",
+      "bg-transparent border-primary-90 hover:bg-transparent hover:border-primary-100 text-primary-90",
     custom: "",
   };
 
