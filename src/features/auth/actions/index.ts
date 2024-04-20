@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth.config";
+import { signIn, signOut } from "@/auth.config";
 import { LoginValues } from "../formik/LoginFormValues";
 
 export async function login(values: LoginValues) {
@@ -13,3 +13,7 @@ export async function login(values: LoginValues) {
     return "CredentialSignIn";
   }
 }
+
+export const logout = async () => {
+  await signOut();
+};

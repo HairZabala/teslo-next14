@@ -1,5 +1,6 @@
 "use client";
 
+import { logout } from "@/features/auth/actions";
 import { useUIStore } from "@/store/ui/ui-store";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
@@ -54,7 +55,8 @@ function Sidebar() {
 
         {/* Menu */}
         <Link
-          href="/"
+          href="/profile"
+          onClick={closeSidebar}
           className="flex  items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoPersonOutline size={30} />
@@ -77,13 +79,13 @@ function Sidebar() {
           <span className="ml-3 text-xl">SignIn</span>
         </Link>
 
-        <Link
-          href="/"
-          className="flex  items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+        <button
+          className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+          onClick={() => logout()}
         >
           <IoLogOutOutline size={30} />
           <span className="ml-3 text-xl">Logout</span>
-        </Link>
+        </button>
 
         <div className="w-full h-px bg-gray-200 my-10" />
 

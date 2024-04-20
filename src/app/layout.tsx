@@ -1,8 +1,8 @@
 import { NProgressComponent } from "@/components/ui/NProgress";
-import "./globals.css";
 import { primaryFont } from "@/utils/font";
-import { Suspense } from "react";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Teslo | Shop",

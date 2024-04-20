@@ -4,7 +4,7 @@ import DefaultButton from "@/components/ui/ButtonComponent";
 import { Formik, FormikProps } from "formik";
 import Link from "next/link";
 import { useCallback, useRef } from "react";
-import { login } from "../actions/login";
+import { login } from "../actions";
 import {
   LoginFields,
   LoginValues,
