@@ -1,0 +1,7 @@
+fragment UserBase on User {
+  id
+  email
+  fullName
+  roles
+  isActive
+}

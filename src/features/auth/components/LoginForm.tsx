@@ -1,25 +1,31 @@
 "use client";
 
 import DefaultButton from "@/components/ui/ButtonComponent";
+import { Formik, FormikProps } from "formik";
 import Link from "next/link";
-import React, { useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
+import { login } from "../actions/login";
 import {
   LoginFields,
   LoginValues,
   loginValidationSchema,
-} from "../formik/CreateRiskAssessmentFormValues";
-import { Formik, FormikProps } from "formik";
+} from "../formik/LoginFormValues";
 
 const INITIAL_VALUES: LoginValues = {
-  [LoginFields.EMAIL]: "",
-  [LoginFields.PASSWORD]: "",
+  [LoginFields.EMAIL]: "hair@google.com",
+  [LoginFields.PASSWORD]: "Abc123",
 };
 
 const LoginForm = () => {
   const formRef = useRef<FormikProps<LoginValues>>(null);
 
-  const onSubmit = useCallback((values: LoginValues) => {
+  const onSubmit = useCallback(async (values: LoginValues) => {
     console.debug(values);
+    try {
+      await login(values);
+    } catch (error) {
+      console.debug(error);
+    }
   }, []);
 
   return (
@@ -37,6 +43,8 @@ const LoginForm = () => {
         handleChange,
         errors,
         touched,
+        isSubmitting,
+        values,
       }: FormikProps<LoginValues>) => {
         return (
           <form className="flex flex-col">
@@ -45,6 +53,7 @@ const LoginForm = () => {
               type="email"
               id={LoginFields.EMAIL}
               name={LoginFields.EMAIL}
+              value={values.email}
               onBlur={handleBlur}
               onChange={handleChange}
               className="px-5 py-2 border bg-gray-200 rounded mb-5"
@@ -61,6 +70,7 @@ const LoginForm = () => {
               type="password"
               id={LoginFields.PASSWORD}
               name={LoginFields.PASSWORD}
+              value={values.password}
               onBlur={handleBlur}
               onChange={handleChange}
             />
@@ -68,7 +78,12 @@ const LoginForm = () => {
               <div className="text-red-500">{errors.password}</div>
             )}
 
-            <DefaultButton type="submit" text="LogIn" onClick={handleSubmit} />
+            <DefaultButton
+              type="submit"
+              text="LogIn"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            />
 
             {/* divisor l ine */}
             <div className="flex items-center my-5">
