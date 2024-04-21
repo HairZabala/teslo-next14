@@ -16,5 +16,7 @@ export async function login(values: LoginValues) {
 }
 
 export const logout = async () => {
-  await signOut();
+  await signOut({
+    redirectTo: "/",
+  });
 };

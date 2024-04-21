@@ -3,6 +3,7 @@
 import DefaultButton from "@/components/ui/ButtonComponent";
 import { Formik, FormikProps } from "formik";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useRef } from "react";
 import { login } from "../actions";
 import {
@@ -17,16 +18,22 @@ const INITIAL_VALUES: LoginValues = {
 };
 
 const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("callbackUrl");
+
   const formRef = useRef<FormikProps<LoginValues>>(null);
 
-  const onSubmit = useCallback(async (values: LoginValues) => {
-    try {
-      await login(values);
-      window.location.replace("/");
-    } catch (error) {
-      console.debug(error);
-    }
-  }, []);
+  const onSubmit = useCallback(
+    async (values: LoginValues) => {
+      try {
+        await login(values);
+        window.location.replace(search ?? "/");
+      } catch (error) {
+        console.debug(error);
+      }
+    },
+    [search]
+  );
 
   return (
     <Formik<LoginValues>
