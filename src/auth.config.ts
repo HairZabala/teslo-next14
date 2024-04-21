@@ -1,7 +1,9 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { LoginDocument, LoginMutationResult } from "./graphql/generated";
-import { apolloClient } from "./utils/apolloServer";
+import { apolloErrorToString } from "./utils/apolloErrors";
+
+const protectedRoutes = ["/profile", "/checkout/address", "/checkout"];
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -22,6 +24,23 @@ export const authConfig: NextAuthConfig = {
       session.user = token.data as any;
       return session;
     },
+
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
+
+      const isAuthRoute = nextUrl.pathname.includes("/auth");
+
+      if (isProtectedRoute && !isLoggedIn) {
+        return false;
+      }
+
+      if (isLoggedIn && isAuthRoute) {
+        return Response.redirect(new URL("/", nextUrl));
+      }
+
+      return true;
+    },
   },
   providers: [
     Credentials({
@@ -35,17 +54,32 @@ export const authConfig: NextAuthConfig = {
         const { password, email } = credentials;
 
         try {
-          const { data } = (await apolloClient().mutate({
-            mutation: LoginDocument,
-            variables: {
-              loginInput: {
-                email,
-                password,
-              },
+          const resp = await fetch(process.env.APOLLO_ENDPOINT as string, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Cache-Control": "no-cache",
             },
-          })) as LoginMutationResult;
+            body: JSON.stringify({
+              operationName: "Login",
+              variables: {
+                loginInput: {
+                  email: (credentials.email as string).toLowerCase(),
+                  password: credentials.password,
+                },
+              },
+              query: LoginDocument.loc?.source.body,
+            }),
+          });
 
-          if (!data?.login.user) return null;
+          const { data } = await resp.json();
+
+          if (data?.errors || !data) {
+            // generate error message
+            const errorMessage = data?.errors[0].message;
+            // reject with error message
+            throw new Error(errorMessage);
+          }
 
           return {
             id: data.login.user.id,
@@ -55,7 +89,7 @@ export const authConfig: NextAuthConfig = {
             roles: data.login.user.roles,
           };
         } catch (error) {
-          return null;
+          throw new Error(apolloErrorToString(error as any));
         }
       },
     }),
