@@ -20,19 +20,19 @@ export default function TopMenu() {
       {/* Center menu */}
       <div className="hidden md:block">
         <Link
-          href="/category/men"
+          href="/gender/men"
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-200"
         >
           Men
         </Link>
         <Link
-          href="/category/women"
+          href="/gender/women"
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-200"
         >
           Women
         </Link>
         <Link
-          href="/category/kid"
+          href="/gender/kid"
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-200"
         >
           Kids

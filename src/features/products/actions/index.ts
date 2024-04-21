@@ -1,4 +1,5 @@
 import {
+  Gender,
   ProductEdge,
   ProductsDocument,
   ProductsQueryResult,
@@ -8,12 +9,17 @@ import { apolloClient } from "@/utils/apolloServer";
 
 const REGISTERS_PER_PAGE = 12;
 
+interface ProductFilters {
+  gender?: Gender;
+}
+
 export const getPaginatedProducts = async ({
   first,
   after,
   last,
   before,
-}: PaginationArgs) => {
+  gender,
+}: PaginationArgs & ProductFilters) => {
   try {
     const { data } = (await apolloClient().query({
       fetchPolicy: "cache-first",
@@ -23,6 +29,7 @@ export const getPaginatedProducts = async ({
         after,
         last,
         before,
+        gender,
       },
     })) as ProductsQueryResult;
 

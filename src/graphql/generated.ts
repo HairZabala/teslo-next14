@@ -60,10 +60,10 @@ export type CreateProductInput = {
 };
 
 export enum Gender {
-  Kid = 'Kid',
-  Men = 'Men',
-  Unisex = 'Unisex',
-  Women = 'Women'
+  Kid = 'kid',
+  Men = 'men',
+  Unisex = 'unisex',
+  Women = 'women'
 }
 
 export type LoginInput = {
@@ -229,6 +229,7 @@ export type QueryProductsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Float']['input']>;
+  gender?: InputMaybe<Gender>;
   last?: InputMaybe<Scalars['Float']['input']>;
 };
 
@@ -315,6 +316,7 @@ export type ProductsQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   last?: InputMaybe<Scalars['Float']['input']>;
+  gender?: InputMaybe<Gender>;
 }>;
 
 
@@ -465,8 +467,14 @@ export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const ProductsDocument = gql`
-    query Products($first: Float, $before: String, $after: String, $last: Float) {
-  products(first: $first, before: $before, after: $after, last: $last) {
+    query Products($first: Float, $before: String, $after: String, $last: Float, $gender: Gender) {
+  products(
+    first: $first
+    before: $before
+    after: $after
+    last: $last
+    gender: $gender
+  ) {
     pageData {
       ...PageDataBase
     }
@@ -494,6 +502,7 @@ ${ProductConnectionBaseFragmentDoc}`;
  *      before: // value for 'before'
  *      after: // value for 'after'
  *      last: // value for 'last'
+ *      gender: // value for 'gender'
  *   },
  * });
  */
