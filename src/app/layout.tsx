@@ -3,6 +3,8 @@ import { primaryFont } from "@/utils/font";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
+import Provider from "@/provider/Provider";
+import { ApolloWrapper } from "@/utils/ApolloWrapper";
 
 export const metadata: Metadata = {
   title: "Teslo | Shop",
@@ -20,7 +22,9 @@ export default function RootLayout({
         <Suspense>
           <NProgressComponent />
         </Suspense>
-        {children}
+        <ApolloWrapper>
+          <Provider>{children}</Provider>
+        </ApolloWrapper>
       </body>
     </html>
   );

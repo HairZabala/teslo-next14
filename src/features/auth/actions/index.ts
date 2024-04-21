@@ -1,4 +1,5 @@
 "use server";
+
 import { signIn, signOut } from "@/auth.config";
 import { LoginValues } from "../formik/LoginFormValues";
 
@@ -10,7 +11,7 @@ export async function login(values: LoginValues) {
       redirect: false,
     });
   } catch (error) {
-    return "CredentialSignIn";
+    return "CredentialsSignIn";
   }
 }
 

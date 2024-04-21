@@ -20,9 +20,9 @@ const LoginForm = () => {
   const formRef = useRef<FormikProps<LoginValues>>(null);
 
   const onSubmit = useCallback(async (values: LoginValues) => {
-    console.debug(values);
     try {
       await login(values);
+      window.location.replace("/");
     } catch (error) {
       console.debug(error);
     }
