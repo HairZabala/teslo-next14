@@ -1,0 +1,5 @@
+query ProductBySlug($slug: String!) {
+  productBySlug(slug: $slug) {
+    ...ProductBase
+  }
+}

@@ -1,3 +1,5 @@
+export const revalidate = 60; // 60 seconds
+
 import HeaderPage from "@/components/ui/HeaderPage";
 import PaginationData from "@/components/ui/PaginationData";
 import { getPaginatedProducts } from "@/features/products/actions";

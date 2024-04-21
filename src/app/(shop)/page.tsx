@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // 60 seconds
 
 import HeaderPage from "@/components/ui/HeaderPage";
 import PaginationData from "@/components/ui/PaginationData";

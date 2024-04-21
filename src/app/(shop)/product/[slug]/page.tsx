@@ -1,12 +1,13 @@
+export const revalidate = 604800; // 7 days
+
 import Title from "@/components/typography/Title";
 import PrimaryButton from "@/components/ui/ButtonComponent";
-import MobileSlideShow from "@/features/product/MobileSlideShow";
-import QuantitySelector from "@/features/product/QuantitySelector";
-import SizeSelector from "@/features/product/SizeSelector";
-import SlideShow from "@/features/product/SlideShow";
-import { initialData } from "@/seed/seed";
+import { getProductBySlug } from "@/features/product/actions";
+import MobileSlideShow from "@/features/product/components/MobileSlideShow";
+import QuantitySelector from "@/features/product/components/QuantitySelector";
+import SizeSelector from "@/features/product/components/SizeSelector";
+import SlideShow from "@/features/product/components/SlideShow";
 import { notFound } from "next/navigation";
-import React from "react";
 
 interface Props {
   params: {
@@ -14,10 +15,10 @@ interface Props {
   };
 }
 
-export default function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
   const { slug } = params;
 
-  const product = initialData.products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -27,12 +28,12 @@ export default function ProductPage({ params }: Props) {
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       <div className="col-span-1 md:col-span-2">
         <MobileSlideShow
-          images={product.images}
+          images={product.images.map((image) => image.url)}
           title={product.title}
           className="md:hidden"
         />
         <SlideShow
-          images={product.images}
+          images={product.images.map((image) => image.url)}
           title={product.title}
           className="hidden md:block"
         />

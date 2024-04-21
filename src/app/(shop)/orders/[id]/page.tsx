@@ -1,6 +1,6 @@
 import PrimaryButton from "@/components/ui/ButtonComponent";
 import HeaderPage from "@/components/ui/HeaderPage";
-import QuantitySelector from "@/features/product/QuantitySelector";
+import QuantitySelector from "@/features/product/components/QuantitySelector";
 import { initialData } from "@/seed/seed";
 import { cn } from "@/utils/cn";
 import Image from "next/image";

@@ -208,6 +208,7 @@ export type Query = {
   __typename?: 'Query';
   category: Category;
   product: Product;
+  productBySlug: Product;
   products: ProductPageResponse;
   revalidate: AuthResponse;
   user: User;
@@ -222,6 +223,11 @@ export type QueryCategoryArgs = {
 
 export type QueryProductArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryProductBySlugArgs = {
+  slug: Scalars['String']['input'];
 };
 
 
@@ -310,6 +316,13 @@ export type SignUpMutationVariables = Exact<{
 
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, email: string, fullName: string, roles: Array<ValidRoles>, isActive: boolean } } };
+
+export type ProductBySlugQueryVariables = Exact<{
+  slug: Scalars['String']['input'];
+}>;
+
+
+export type ProductBySlugQuery = { __typename?: 'Query', productBySlug: { __typename?: 'Product', id: string, title: string, description: string, inStock: number, price: number, sizes: Array<ProductSize>, slug: string, tags: Array<string>, gender: Gender, images: Array<{ __typename?: 'ProductImage', id: string, url: string }> } };
 
 export type ProductsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Float']['input']>;
@@ -466,6 +479,46 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const ProductBySlugDocument = gql`
+    query ProductBySlug($slug: String!) {
+  productBySlug(slug: $slug) {
+    ...ProductBase
+  }
+}
+    ${ProductBaseFragmentDoc}`;
+
+/**
+ * __useProductBySlugQuery__
+ *
+ * To run a query within a React component, call `useProductBySlugQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductBySlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductBySlugQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useProductBySlugQuery(baseOptions: Apollo.QueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables> & ({ variables: ProductBySlugQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
+      }
+export function useProductBySlugLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
+        }
+export function useProductBySlugSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
+        }
+export type ProductBySlugQueryHookResult = ReturnType<typeof useProductBySlugQuery>;
+export type ProductBySlugLazyQueryHookResult = ReturnType<typeof useProductBySlugLazyQuery>;
+export type ProductBySlugSuspenseQueryHookResult = ReturnType<typeof useProductBySlugSuspenseQuery>;
+export type ProductBySlugQueryResult = Apollo.QueryResult<ProductBySlugQuery, ProductBySlugQueryVariables>;
 export const ProductsDocument = gql`
     query Products($first: Float, $before: String, $after: String, $last: Float, $gender: Gender) {
   products(
