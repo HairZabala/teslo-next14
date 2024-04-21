@@ -1,0 +1,10 @@
+query Products($first: Float, $before: String, $after: String, $last: Float) {
+  products(first: $first, before: $before, after: $after, last: $last) {
+    pageData {
+      ...PageDataBase
+    }
+    page {
+      ...ProductConnectionBase
+    }
+  }
+}

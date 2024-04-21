@@ -1,5 +1,5 @@
 import HeaderPage from "@/components/ui/HeaderPage";
-import ProductGrid from "@/features/products/ProductGrid";
+import ProductGrid from "@/features/products/components/ProductGrid";
 import { Category, initialData } from "@/seed/seed";
 import { capitalise } from "@/utils/utils";
 import { notFound } from "next/navigation";

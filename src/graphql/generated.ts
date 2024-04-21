@@ -125,6 +125,21 @@ export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
 };
 
+export type PageData = {
+  __typename?: 'PageData';
+  count: Scalars['Float']['output'];
+  limit: Scalars['Float']['output'];
+  offset: Scalars['Float']['output'];
+};
+
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   /** Category with the issues */
@@ -151,6 +166,18 @@ export type Product = {
   title: Scalars['String']['output'];
 };
 
+export type ProductConnection = {
+  __typename?: 'ProductConnection';
+  edges?: Maybe<Array<ProductEdge>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type ProductEdge = {
+  __typename?: 'ProductEdge';
+  cursor?: Maybe<Scalars['String']['output']>;
+  node?: Maybe<Product>;
+};
+
 export type ProductImage = {
   __typename?: 'ProductImage';
   /** Id of the product */
@@ -159,6 +186,12 @@ export type ProductImage = {
   product: Product;
   /** Title of the product */
   url: Scalars['String']['output'];
+};
+
+export type ProductPageResponse = {
+  __typename?: 'ProductPageResponse';
+  page: ProductConnection;
+  pageData?: Maybe<PageData>;
 };
 
 export enum ProductSize {
@@ -175,7 +208,7 @@ export type Query = {
   __typename?: 'Query';
   category: Category;
   product: Product;
-  products: Array<Product>;
+  products: ProductPageResponse;
   revalidate: AuthResponse;
   user: User;
   users: Array<User>;
@@ -189,6 +222,14 @@ export type QueryCategoryArgs = {
 
 export type QueryProductArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryProductsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
@@ -269,8 +310,79 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, email: string, fullName: string, roles: Array<ValidRoles>, isActive: boolean } } };
 
+export type ProductsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Float']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+}>;
+
+
+export type ProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductPageResponse', pageData?: { __typename?: 'PageData', count: number, limit: number, offset: number } | null, page: { __typename?: 'ProductConnection', edges?: Array<{ __typename?: 'ProductEdge', cursor?: string | null, node?: { __typename?: 'Product', id: string, title: string, description: string, inStock: number, price: number, sizes: Array<ProductSize>, slug: string, tags: Array<string>, gender: Gender, images: Array<{ __typename?: 'ProductImage', id: string, url: string }> } | null }> | null, pageInfo?: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null } | null } } };
+
+export type PageDataBaseFragment = { __typename?: 'PageData', count: number, limit: number, offset: number };
+
+export type PageInfoBaseFragment = { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null };
+
+export type ProductBaseFragment = { __typename?: 'Product', id: string, title: string, description: string, inStock: number, price: number, sizes: Array<ProductSize>, slug: string, tags: Array<string>, gender: Gender, images: Array<{ __typename?: 'ProductImage', id: string, url: string }> };
+
+export type ProductConnectionBaseFragment = { __typename?: 'ProductConnection', edges?: Array<{ __typename?: 'ProductEdge', cursor?: string | null, node?: { __typename?: 'Product', id: string, title: string, description: string, inStock: number, price: number, sizes: Array<ProductSize>, slug: string, tags: Array<string>, gender: Gender, images: Array<{ __typename?: 'ProductImage', id: string, url: string }> } | null }> | null, pageInfo?: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null } | null };
+
+export type ProductEdgeBaseFragment = { __typename?: 'ProductEdge', cursor?: string | null, node?: { __typename?: 'Product', id: string, title: string, description: string, inStock: number, price: number, sizes: Array<ProductSize>, slug: string, tags: Array<string>, gender: Gender, images: Array<{ __typename?: 'ProductImage', id: string, url: string }> } | null };
+
 export type UserBaseFragment = { __typename?: 'User', id: string, email: string, fullName: string, roles: Array<ValidRoles>, isActive: boolean };
 
+export const PageDataBaseFragmentDoc = gql`
+    fragment PageDataBase on PageData {
+  count
+  limit
+  offset
+}
+    `;
+export const ProductBaseFragmentDoc = gql`
+    fragment ProductBase on Product {
+  id
+  title
+  description
+  inStock
+  price
+  sizes
+  slug
+  tags
+  gender
+  images {
+    id
+    url
+  }
+}
+    `;
+export const ProductEdgeBaseFragmentDoc = gql`
+    fragment ProductEdgeBase on ProductEdge {
+  cursor
+  node {
+    ...ProductBase
+  }
+}
+    ${ProductBaseFragmentDoc}`;
+export const PageInfoBaseFragmentDoc = gql`
+    fragment PageInfoBase on PageInfo {
+  endCursor
+  hasNextPage
+  hasPreviousPage
+  startCursor
+}
+    `;
+export const ProductConnectionBaseFragmentDoc = gql`
+    fragment ProductConnectionBase on ProductConnection {
+  edges {
+    ...ProductEdgeBase
+  }
+  pageInfo {
+    ...PageInfoBase
+  }
+}
+    ${ProductEdgeBaseFragmentDoc}
+${PageInfoBaseFragmentDoc}`;
 export const UserBaseFragmentDoc = gql`
     fragment UserBase on User {
   id
@@ -352,3 +464,52 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const ProductsDocument = gql`
+    query Products($first: Float, $before: String, $after: String, $last: Float) {
+  products(first: $first, before: $before, after: $after, last: $last) {
+    pageData {
+      ...PageDataBase
+    }
+    page {
+      ...ProductConnectionBase
+    }
+  }
+}
+    ${PageDataBaseFragmentDoc}
+${ProductConnectionBaseFragmentDoc}`;
+
+/**
+ * __useProductsQuery__
+ *
+ * To run a query within a React component, call `useProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      before: // value for 'before'
+ *      after: // value for 'after'
+ *      last: // value for 'last'
+ *   },
+ * });
+ */
+export function useProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, options);
+      }
+export function useProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, options);
+        }
+export function useProductsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, options);
+        }
+export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>;
+export type ProductsLazyQueryHookResult = ReturnType<typeof useProductsLazyQuery>;
+export type ProductsSuspenseQueryHookResult = ReturnType<typeof useProductsSuspenseQuery>;
+export type ProductsQueryResult = Apollo.QueryResult<ProductsQuery, ProductsQueryVariables>;

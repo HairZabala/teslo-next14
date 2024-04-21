@@ -1,12 +1,45 @@
-import Subtitle from "@/components/typography/Subtitle";
-import Title from "@/components/typography/Title";
+export const dynamic = "force-dynamic";
+
 import HeaderPage from "@/components/ui/HeaderPage";
-import ProductGrid from "@/features/products/ProductGrid";
-import { initialData } from "@/seed/seed";
+import PaginationData from "@/components/ui/PaginationData";
+import { getPaginatedProducts } from "@/features/products/actions";
+import ProductGrid from "@/features/products/components/ProductGrid";
+import { ProductEdge } from "@/graphql/generated";
+import { redirect } from "next/navigation";
 
-const products = initialData.products;
+const REGISTERS_PER_PAGE = 12;
 
-export default function Home() {
+interface Props {
+  searchParams: {
+    first?: string;
+    last?: string;
+    after?: string;
+    before?: string;
+  };
+}
+
+export default async function Home({ searchParams }: Props) {
+  const first = searchParams.first
+    ? isNaN(Number(searchParams.first))
+      ? null
+      : parseInt(searchParams.first)
+    : REGISTERS_PER_PAGE;
+
+  const last = searchParams.last
+    ? Number(searchParams.last) ?? REGISTERS_PER_PAGE
+    : null;
+
+  const { products, pageData, pageInfo } = await getPaginatedProducts({
+    first,
+    last,
+    after: searchParams.after,
+    before: searchParams.before,
+  });
+
+  if (products.length === 0) {
+    redirect("/");
+  }
+
   return (
     <>
       <HeaderPage
@@ -14,7 +47,12 @@ export default function Home() {
         subtitle="Welcome to the store"
         className="mb-2"
       />
-      <ProductGrid products={products} />
+      <ProductGrid products={products as ProductEdge[]} />
+      <PaginationData
+        perPage={first ?? REGISTERS_PER_PAGE}
+        pageInfo={pageInfo!}
+        pageData={pageData!}
+      />
     </>
   );
 }

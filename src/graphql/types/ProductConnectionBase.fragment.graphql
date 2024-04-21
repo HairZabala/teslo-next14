@@ -1,0 +1,8 @@
+fragment ProductConnectionBase on ProductConnection {
+  edges {
+    ...ProductEdgeBase
+  }
+  pageInfo {
+    ...PageInfoBase
+  }
+}

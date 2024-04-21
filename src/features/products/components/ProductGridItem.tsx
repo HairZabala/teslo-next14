@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/interfaces";
+import { Product } from "@/graphql/generated";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -16,7 +16,7 @@ function ProductGridItem({ product }: ProductGridItemProps) {
     <div className="rounded-md overflow-hidden">
       <Link href={`/product/${product.slug}`}>
         <Image
-          src={`/products/${displayImage}`}
+          src={`/products/${displayImage.url}`}
           alt={product.title}
           className="w-full object-cover rounded "
           width={500}

@@ -13,3 +13,10 @@ export interface Product {
 
 export type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
 export type ValidTypes = "shirts" | "pants" | "hoodies" | "hats";
+
+export interface PaginationArgs {
+  first: number | null;
+  last: number | null;
+  before?: string;
+  after?: string;
+}

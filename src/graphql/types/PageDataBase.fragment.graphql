@@ -1,0 +1,5 @@
+fragment PageDataBase on PageData {
+  count
+  limit
+  offset
+}

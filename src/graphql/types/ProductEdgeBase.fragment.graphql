@@ -1,0 +1,6 @@
+fragment ProductEdgeBase on ProductEdge {
+  cursor
+  node {
+    ...ProductBase
+  }
+}

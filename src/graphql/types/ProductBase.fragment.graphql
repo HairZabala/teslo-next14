@@ -1,0 +1,15 @@
+fragment ProductBase on Product {
+  id
+  title
+  description
+  inStock
+  price
+  sizes
+  slug
+  tags
+  gender
+  images {
+    id
+    url
+  }
+}
